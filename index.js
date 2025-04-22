@@ -93,6 +93,12 @@ function addNewForm() {
               <span>корицу</span>
             </label>
           </div>
+          <div class="sevenArea">
+            <label>И еще вот что<br/>
+              <textarea></textarea>
+              <p></p>
+            </label>
+          </div>
         </div>
         <div>
           <button type="button" class="delete-form-btn">Удалить</button>
@@ -112,6 +118,20 @@ function addNewForm() {
             fs.remove();
         }
     })
+
+    const textArea = newFieldSet.querySelector('.sevenArea textarea');
+    const comArea = newFieldSet.querySelector('.sevenArea p')
+
+
+    const highlightRegex = /(^|[^А-Яа-яёЁA-Za-z0-9_])(срочно|быстрее|побыстрее|скорее|поскорее|очень нужно)(?=$|[^А-Яа-яёЁA-Za-z0-9_])/gi;
+
+    textArea.addEventListener('input', event => {
+    const txt = event.target.value;
+    const highlighted = txt.replace(highlightRegex, (match, prefix, word) =>
+        prefix + '<b>' + word + '</b>'
+    );
+        comArea.innerHTML = highlighted;
+    });
 }
 
 const modal = document.getElementById('modal');
@@ -136,7 +156,7 @@ function openModal(e) {
     }
 
     let html = `<p>Вы заказали ${drinkDeclension}</p>`;
-    html += '<table><tr><th>Напиток</th><th>Молоко</th><th>Дополнительно</th></tr>';
+    html += '<table><tr><th>Напиток</th><th>Молоко</th><th>Дополнительно</th><th>Пожелания</th></tr>';
     
     for (const idNum of usedNums) {
         const form = document.getElementById(idNum)
@@ -167,10 +187,12 @@ function openModal(e) {
             }
         });
         
+        const posh = form.querySelector('.sevenArea textarea').value;
         html += `<tr>
             <td>${drinkName}</td>
             <td>${milkName}</td>
             <td>${options.join(', ')}</td>
+            <td>${posh}</td>
         </tr>`;
     }
     
