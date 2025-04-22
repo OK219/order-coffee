@@ -92,9 +92,9 @@ function openModal(e) {
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
     let drinkDeclension = '';
-    if (count > 9 && count < 21 || count % 10 > 4) {
+    if (drinksCount > 9 && drinksCount < 21 || drinksCount % 10 > 4) {
         drinkDeclension = `${drinksCount} напитков`;
-    } else if (count % 10 === 1) {
+    } else if (drinksCount % 10 === 1) {
         drinkDeclension = `${drinksCount} напиток`;
     } else {
         drinkDeclension = `${drinksCount} напитка`;
