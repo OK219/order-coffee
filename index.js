@@ -19,6 +19,22 @@ deleteBtn.addEventListener('click', () => {
     }
 })
 
+
+const textArea = document.querySelector('.sevenArea textarea');
+const comArea = document.querySelector('.sevenArea p')
+
+
+const highlightRegex = /(^|[^А-Яа-яёЁA-Za-z0-9_])(срочно|быстрее|побыстрее|скорее|поскорее|очень нужно)(?=$|[^А-Яа-яёЁA-Za-z0-9_])/gi;
+
+textArea.addEventListener('input', event => {
+  const txt = event.target.value;
+  const highlighted = txt.replace(highlightRegex, (match, prefix, word) =>
+    prefix + '<b>' + word + '</b>'
+  );
+  comArea.innerHTML = highlighted;
+});
+
+
 function addNewForm() {
     const newFieldSet = document.createElement('fieldset');
     newFieldSet.classList.add('beverage');
