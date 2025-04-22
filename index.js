@@ -27,6 +27,7 @@ function addNewForm() {
     while (usedNums.includes(newNum)) {
         newNum++;
     }
+    newFieldSet.id = newNum;
     usedNums.push(newNum);
     newFieldSet.innerHTML = `        <div>
           <h4 class="beverage-count">Напиток №${newNum}</h4>
@@ -121,8 +122,8 @@ function openModal(e) {
     let html = `<p>Вы заказали ${drinkDeclension}</p>`;
     html += '<table><tr><th>Напиток</th><th>Молоко</th><th>Дополнительно</th></tr>';
     
-    const forms = document.querySelectorAll(".beverage");
-    forms.forEach((form, index) => {
+    for (const idNum of usedNums) {
+        const form = document.getElementById(idNum)
         const drink = form.querySelector('select').value;
         let drinkName = '';
         switch(drink) {
@@ -131,7 +132,7 @@ function openModal(e) {
             case 'cacao': drinkName = 'Какао'; break;
         }
         
-        const milk = form.querySelector('input[name="milk"]:checked').value;
+        const milk = form.querySelector(`input[name="milk${idNum}"]:checked`).value;
         let milkName = '';
         switch(milk) {
             case 'usual': milkName = 'обычное'; break;
@@ -141,7 +142,7 @@ function openModal(e) {
         }
         
         const options = [];
-        form.querySelectorAll('input[name="options"]:checked').forEach(option => {
+        form.querySelectorAll(`input[name="options${idNum}"]:checked`).forEach(option => {
             switch(option.value) {
                 case 'whipped cream': options.push('взбитые сливки'); break;
                 case 'marshmallow': options.push('зефирки'); break;
@@ -155,7 +156,7 @@ function openModal(e) {
             <td>${milkName}</td>
             <td>${options.join(', ')}</td>
         </tr>`;
-    });
+    }
     
     html += '</table>';
     content.innerHTML = html;
