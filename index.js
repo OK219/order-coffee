@@ -1,5 +1,5 @@
 let drinksCount = 1;
-
+let usedNums = [1];
 const addBtn = document.querySelector('.add-button');
 addBtn.addEventListener('click', () => {
     addNewForm();
@@ -8,16 +8,28 @@ addBtn.addEventListener('click', () => {
 const deleteBtn = document.querySelector('.delete-form-btn');
 deleteBtn.addEventListener('click', () => {
     if (drinksCount > 1) {
+        const fs = deleteBtn.parentElement.parentElement;
+
+        const match = fs.innerHTML.match(/(?<=№)\d+(?=<)/);
+
+        const num = parseInt(match[0]);
         drinksCount--;
-        deleteBtn.parentElement.parentElement.remove();
+        usedNums = usedNums.filter(x => x != num);
+        fs.remove();
     }
 })
 
 function addNewForm() {
     const newFieldSet = document.createElement('fieldset');
     newFieldSet.classList.add('beverage');
+    let newNum = 1;
+    drinksCount++;
+    while (usedNums.includes(newNum)) {
+        newNum++;
+    }
+    usedNums.push(newNum);
     newFieldSet.innerHTML = `        <div>
-          <h4 class="beverage-count">Напиток №${++drinksCount}</h4>
+          <h4 class="beverage-count">Напиток №${newNum}</h4>
           <label class="field">
             <span class="label-text">Я буду</span>
             <select>
@@ -29,38 +41,38 @@ function addNewForm() {
           <div class="field">
             <span class="checkbox-label">Сделайте напиток на</span>
             <label class="checkbox-field">
-              <input type="radio" name="milk" value="usual" checked />
+              <input type="radio" name="milk${newNum}" value="usual" checked />
               <span>обычном молоке</span>
             </label>
             <label class="checkbox-field">
-              <input type="radio" name="milk" value="no-fat" />
+              <input type="radio" name="milk${newNum}" value="no-fat" />
               <span>обезжиренном молоке</span>
             </label>
             <label class="checkbox-field">
-              <input type="radio" name="milk" value="soy" />
+              <input type="radio" name="milk${newNum}" value="soy" />
               <span>соевом молоке</span>
             </label>
             <label class="checkbox-field">
-              <input type="radio" name="milk" value="coconut" />
+              <input type="radio" name="milk${newNum}" value="coconut" />
               <span>кокосовом молоке</span>
             </label>
           </div>
           <div class="field">
             <span class="checkbox-label">Добавьте к напитку:</span>
             <label class="checkbox-field">
-              <input type="checkbox" name="options" value="whipped cream" />
+              <input type="checkbox" name="options${newNum}" value="whipped cream" />
               <span>взбитых сливок</span>
             </label>
             <label class="checkbox-field">
-              <input type="checkbox" name="options" value="marshmallow" />
+              <input type="checkbox" name="options${newNum}" value="marshmallow" />
               <span>зефирок</span>
             </label>
             <label class="checkbox-field">
-              <input type="checkbox" name="options" value="chocolate" />
+              <input type="checkbox" name="options${newNum}" value="chocolate" />
               <span>шоколад</span>
             </label>
             <label class="checkbox-field">
-              <input type="checkbox" name="options" value="cinnamon" />
+              <input type="checkbox" name="options${newNum}" value="cinnamon" />
               <span>корицу</span>
             </label>
           </div>
@@ -73,8 +85,14 @@ function addNewForm() {
     const deleteBtn = newFieldSet.querySelector('.delete-form-btn:last-of-type');
     deleteBtn.addEventListener('click', () => {
         if (drinksCount > 1) {
-            deleteBtn.parentElement.parentElement.remove();
+            const fs = deleteBtn.parentElement.parentElement;
+    
+            const match = fs.innerHTML.match(/(?<=№)\d+(?=<)/);
+    
+            const num = parseInt(match[0]);
             drinksCount--;
+            usedNums = usedNums.filter(x => x != num);
+            fs.remove();
         }
     })
 }
