@@ -104,6 +104,7 @@ const closeBtn = document.getElementById('close-btn');
 const openModalBtn = document.getElementById('submit-button');
 const form = document.querySelector('form');
 const content = document.querySelector('.modal-content');
+const confBtn = document.getElementById("timeBtn");
 
 function openModal(e) {
     e.preventDefault(); 
@@ -169,6 +170,24 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 
+function confirm() {
+    const timeInput = document.getElementById("timeInput");
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+    if (!timeInput.value) return false; 
+    const [inputHours, inputMinutes] = timeInput.value.split(':').map(Number);
+    if (currentHours < inputHours) {
+        closeModal();
+        return;
+    } else if (currentHours === inputHours && currentMinutes < inputMinutes) {
+        closeModal();
+        return;
+    }
+    alert("Мы не умеем перемещаться во времени. Выберите время позже, чем текущее");
+}
+
 form.addEventListener('submit', openModal); 
 closeBtn.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
+confBtn.addEventListener('click', confirm)
