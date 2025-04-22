@@ -90,3 +90,55 @@ function addNewForm() {
         }
     })
 }
+
+const modal = document.getElementById('modal');
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('close-btn');
+const openModalBtn = document.getElementById('submit-button');
+const form = document.querySelector('form');
+const content = document.querySelector('.modal-content');
+
+function openModal(e) {
+    e.preventDefault(); 
+    modal.style.display = 'block';
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    let drinkDeclension = '';
+    if (count > 9 && count < 21 || count % 10 > 4) {
+        drinkDeclension = `${drinksCount} напитков`;
+    } else if (count % 10 === 1) {
+        drinkDeclension = `${drinksCount} напиток`;
+    } else {
+        drinkDeclension = `${drinksCount} напитка`;
+    }
+
+    content.innerHTML = `<p>Вы заказали ${drinkDeclension}</p>
+            <table>
+              <tr>
+                <th>Напиток</th>
+                <th>Молоко</th>
+                <th>Дополнительно</th>
+              </tr>
+              <tr>
+                <td>Капучино</td>
+                <td>обычное</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Какао</td>
+                <td>соевое</td>
+                <td>зефирки, шоколад</td>
+              </tr>
+            </table>`;
+    
+}
+
+function closeModal() {
+    modal.style.display = 'none';
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+form.addEventListener('submit', openModal); 
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
