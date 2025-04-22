@@ -100,24 +100,47 @@ function openModal(e) {
         drinkDeclension = `${drinksCount} напитка`;
     }
 
-    content.innerHTML = `<p>Вы заказали ${drinkDeclension}</p>
-            <table>
-              <tr>
-                <th>Напиток</th>
-                <th>Молоко</th>
-                <th>Дополнительно</th>
-              </tr>
-              <tr>
-                <td>Капучино</td>
-                <td>обычное</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Какао</td>
-                <td>соевое</td>
-                <td>зефирки, шоколад</td>
-              </tr>
-            </table>`;
+    let html = `<p>Вы заказали ${drinkDeclension}</p>`;
+    html += '<table><tr><th>Напиток</th><th>Молоко</th><th>Дополнительно</th></tr>';
+    
+    const forms = document.querySelectorAll(".beverage");
+    forms.forEach((form, index) => {
+        const drink = form.querySelector('select').value;
+        let drinkName = '';
+        switch(drink) {
+            case 'espresso': drinkName = 'Эспрессо'; break;
+            case 'capuccino': drinkName = 'Капучино'; break;
+            case 'cacao': drinkName = 'Какао'; break;
+        }
+        
+        const milk = form.querySelector('input[name="milk"]:checked').value;
+        let milkName = '';
+        switch(milk) {
+            case 'usual': milkName = 'обычное'; break;
+            case 'no-fat': milkName = 'обезжиренное'; break;
+            case 'soy': milkName = 'соевое'; break;
+            case 'coconut': milkName = 'кокосовое'; break;
+        }
+        
+        const options = [];
+        form.querySelectorAll('input[name="options"]:checked').forEach(option => {
+            switch(option.value) {
+                case 'whipped cream': options.push('взбитые сливки'); break;
+                case 'marshmallow': options.push('зефирки'); break;
+                case 'chocolate': options.push('шоколад'); break;
+                case 'cinnamon': options.push('корица'); break;
+            }
+        });
+        
+        html += `<tr>
+            <td>${drinkName}</td>
+            <td>${milkName}</td>
+            <td>${options.join(', ')}</td>
+        </tr>`;
+    });
+    
+    html += '</table>';
+    content.innerHTML = html;
     
 }
 
